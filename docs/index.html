@@ -12,68 +12,13 @@
 
 </body>
 
-<script type="text/javascript">
-
-
-        function findRef(obj) {
-                if (obj.hasOwnProperty("$ref")) {
-                        return getRefName(obj["$ref"])
-                } else {
-                        for (const key in obj) {
-                                if (typeof obj[key] == 'object') {
-                                        const childKey = findRef(obj[key]);
-                                        if (childKey) return childKey;
-                                }
-                        }
-                }
-                return null;
-        }
-
-
-        function getRefName(str) {
-                return str.split('/').pop();
-        }
-
-        async function postData(url = '', data = {}) {
-                // Default options are marked with *
-                const response = await fetch(url, {
-                        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                        mode: 'cors', // no-cors, *cors, same-origin
-                        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                        credentials: 'same-origin', // include, *same-origin, omit
-                        headers: {
-                                'Content-Type': 'application/json'
-                                // 'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        redirect: 'follow', // manual, *follow, error
-                        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                        body: JSON.stringify(data) // body data type must match "Content-Type" header
-                });
-                return response.json(); // parses JSON response into native JavaScript objects
-        }
-
-        function cewt(tagName, text) {
-                const element = document.createElement(tagName);
-                element.innerText = text;
-                return element;
-        }
-
-
-        const h1 = 'h1';
-        const h2 = 'h2';
-        const h3 = 'h3';
-        const h4 = 'h4';
-        const h5 = 'h5';
-        const h6 = 'h6';
-        const div = 'div';
-        const ul = 'ul';
-        const li = 'li';
-        const span = 'span';
-
+<script type="module">
+        import drwaUI from '/docs/js/drawUI.js';
+        drwaUI();
+</script>
+<!-- <script type="text/javascript">
 
         (async () => {
-
-
                 const jsonRequest = await fetch('http://localhost:3000/docs/openrpc.json');
                 const json = await jsonRequest.json();
                 const mainServer = json.servers[0].url;
@@ -104,11 +49,6 @@
                         servers_ul.appendChild(server_li);
                 })
 
-
-
-
-
-
                 // const data = {
                 //         "jsonrpc": "2.0",
                 //         "method": "someMethod",
@@ -118,11 +58,6 @@
                 // const test = await postData(server,data);
                 // console.log(test);
 
-
-
-
-
-
                 //=== methods
                 const methods_div = document.createElement(div);
                 main_div.appendChild(methods_div)
@@ -131,21 +66,34 @@
                 const components_div = document.createElement(div);
                 main_div.appendChild(components_div);
 
-                const schemaArray = Object.entries(json.components.schemas);
-                console.log(schemaArray)
+                const schemaEntries = Object.entries(json.components.schemas);
+                
+                const schemaQueue = schemaEntries.map(v=>{
+                                        return { name:v[0], ...v[1] }
+                                });
+                
+                // 완성된 schema가 들어갈 배열
+                const schemaSet = {};
+                
+                while (schemaQueue.length > 0) {
+                        break;
+                        const now = schemaQueue.unshift();
+                        const parent = findRef(now);
 
-                schemaArray.forEach(v=>{
-                        [name,obj] = v;
-                        console.log(name,findRef(obj))
-                })
-
-
-
-
-
-
-
-
+                        if(parent){
+                                if(!schemaSet.hasOwnProperty(parent)) {
+                                        schemaQueue.push(now);
+                                        continue;
+                                } else {
+                                        break;
+                                }
+                        }
+                        // parent없는 schema
+                        else {
+                                break;
+                        }
+                }
+                
                 //===========methods head 
                 const methods_h1 = cewt(h1, 'Methods');
                 methods_div.appendChild(methods_h1);
@@ -247,18 +195,9 @@
 
                         //TODO:schema ref처리
                         //methods보다 components를 먼저 처리해야됨.
-
-
-
-
-
-
-
-
-
                 })
         })();
 
-</script>
+</script> -->
 
 </html>

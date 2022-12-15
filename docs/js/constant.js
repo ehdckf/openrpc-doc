@@ -1,0 +1,10 @@
+export const h1 = 'h1';
+export const h2 = 'h2';
+export const h3 = 'h3';
+export const h4 = 'h4';
+export const h5 = 'h5';
+export const h6 = 'h6';
+export const div = 'div';
+export const ul = 'ul';
+export const li = 'li';
+export const span = 'span';
