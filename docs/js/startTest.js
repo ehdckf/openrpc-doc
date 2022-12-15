@@ -16,3 +16,22 @@ export async function postData(url = '', data = {}) {
         });
         return response.json(); // parses JSON response into native JavaScript objects
 }
+
+
+
+
+
+
+
+        // const data = {
+        //         "jsonrpc": "2.0",
+        //         "method": "someMethod",
+        //         "id": 1234
+        // }
+
+        // const test = await postData(server,data);
+        // console.log(test);
+
+
+
+

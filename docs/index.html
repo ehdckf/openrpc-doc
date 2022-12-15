@@ -26,19 +26,19 @@
                 const main_div = document.querySelector('#main');
 
                 //===title
-                const name_h1 = cewt(h1, json.info.title);
+                const name_h1 = createTitle( json.info.title);
                 main_div.appendChild(name_h1);
 
                 //===server
-                const server_div = document.createElement(div)
+                const server_div = ce(div)
                 main_div.appendChild(server_div);
 
                 //==========server head
-                const servers_h1 = cewt(h1, 'Servers');
+                const servers_h1 = createTitle( 'Servers');
                 server_div.appendChild(servers_h1);
 
                 //==========server ul
-                const servers_ul = document.createElement(ul);
+                const servers_ul = ce(ul);
                 server_div.appendChild(servers_ul);
 
                 console.log(json.servers.length)
@@ -59,11 +59,11 @@
                 // console.log(test);
 
                 //=== methods
-                const methods_div = document.createElement(div);
+                const methods_div = ce(div);
                 main_div.appendChild(methods_div)
 
                 //components
-                const components_div = document.createElement(div);
+                const components_div = ce(div);
                 main_div.appendChild(components_div);
 
                 const schemaEntries = Object.entries(json.components.schemas);
@@ -95,17 +95,17 @@
                 }
                 
                 //===========methods head 
-                const methods_h1 = cewt(h1, 'Methods');
+                const methods_h1 = createTitle( 'Methods');
                 methods_div.appendChild(methods_h1);
 
 
                 //==========methods ul
-                const methods_ul = document.createElement(ul);
+                const methods_ul = ce(ul);
                 methods_div.appendChild(methods_ul);
 
                 //===================server li 
                 json.methods.sort().forEach(m => {
-                        const method_li = document.createElement(li);
+                        const method_li = ce(li);
                         methods_ul.appendChild(method_li);
 
                         const method_name = cewt(h2, m.name);
@@ -115,20 +115,20 @@
                         method_li.appendChild(method_description);
 
 
-                        const params_div = document.createElement(div);
+                        const params_div = ce(div);
                         method_li.appendChild(params_div);
 
                         const params_head = cewt(h4, "Params");
                         params_div.appendChild(params_head);
 
-                        const params_ul = document.createElement(ul);
+                        const params_ul = ce(ul);
                         params_div.appendChild(params_ul);
 
                         m.params.forEach(p => {
-                                const param_li = document.createElement(li);
+                                const param_li = ce(li);
                                 params_ul.appendChild(param_li);
 
-                                const param_head = document.createElement(div);
+                                const param_head = ce(div);
                                 param_li.appendChild(param_head);
 
                                 const param_name = cewt(span, p.name);
@@ -145,13 +145,13 @@
                                 param_li.appendChild(param_description);
 
 
-                                const param_schema = document.createElement(div);
+                                const param_schema = ce(div);
                                 param_li.appendChild(param_schema);
 
                                 const param_schema_head = cewt(div, 'schema');
                                 param_schema.appendChild(param_schema_head);
 
-                                const param_schema_body = document.createElement(div);
+                                const param_schema_body = ce(div);
 
                                 if (p.schema?.type == 'array') {
                                         param_schema_body.innerText = p.schema.items.type + "[]";
@@ -165,7 +165,7 @@
                         })
 
 
-                        const result_div = document.createElement(div);
+                        const result_div = ce(div);
                         method_li.appendChild(result_div);
 
                         const result_head = cewt(h4, "Result");
@@ -178,13 +178,13 @@
                         result_div.appendChild(result_description);
 
 
-                        const result_schema = document.createElement(div);
+                        const result_schema = ce(div);
                         result_div.appendChild(result_schema);
 
                         const result_schema_head = cewt(div, 'schema');
                         result_schema.appendChild(result_schema_head);
 
-                        const result_schema_body = document.createElement(div);
+                        const result_schema_body = ce(div);
 
                         if (m.result.schema?.type == 'array') {
                                 result_schema_body.innerText = m.result.schema.items.type + "[]";

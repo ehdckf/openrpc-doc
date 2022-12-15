@@ -134,6 +134,12 @@
           }
         ]
       },
+      "Pets": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Pet"
+        }
+      },
       "NewPet": {
         "type": "object",
         "required": [
