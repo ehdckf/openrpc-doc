@@ -8,3 +8,5 @@ export const div = 'div';
 export const ul = 'ul';
 export const li = 'li';
 export const span = 'span';
+export const a = 'a';
+export const button = 'button';

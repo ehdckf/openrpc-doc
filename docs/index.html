@@ -5,199 +5,32 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
         <title>Document</title>
+        <link rel="stylesheet" href="docs/index.css">
 </head>
 
 <body id="main">
 
 </body>
+<script>
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
+        window.MonacoEnvironment = { getWorkerUrl: () => proxy };
+
+        let proxy = URL.createObjectURL(new Blob([`
+	self.MonacoEnvironment = {
+		baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
+	};
+	importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');
+`], { type: 'text/javascript' }));
+
+</script>
 
 <script type="module">
-        import drwaUI from '/docs/js/drawUI.js';
-        drwaUI();
+        import createDocs from '/docs/js/index.js';
+        createDocs();
 </script>
-<!-- <script type="text/javascript">
-
-        (async () => {
-                const jsonRequest = await fetch('http://localhost:3000/docs/openrpc.json');
-                const json = await jsonRequest.json();
-                const mainServer = json.servers[0].url;
-
-                const main_div = document.querySelector('#main');
-
-                //===title
-                const name_h1 = createTitle( json.info.title);
-                main_div.appendChild(name_h1);
-
-                //===server
-                const server_div = ce(div)
-                main_div.appendChild(server_div);
-
-                //==========server head
-                const servers_h1 = createTitle( 'Servers');
-                server_div.appendChild(servers_h1);
-
-                //==========server ul
-                const servers_ul = ce(ul);
-                server_div.appendChild(servers_ul);
-
-                console.log(json.servers.length)
-                //===================server li 
-                json.servers.forEach(s => {
-                        const { url } = s;
-                        const server_li = cewt(li, url);
-                        servers_ul.appendChild(server_li);
-                })
-
-                // const data = {
-                //         "jsonrpc": "2.0",
-                //         "method": "someMethod",
-                //         "id": 1234
-                // }
-
-                // const test = await postData(server,data);
-                // console.log(test);
-
-                //=== methods
-                const methods_div = ce(div);
-                main_div.appendChild(methods_div)
-
-                //components
-                const components_div = ce(div);
-                main_div.appendChild(components_div);
-
-                const schemaEntries = Object.entries(json.components.schemas);
-                
-                const schemaQueue = schemaEntries.map(v=>{
-                                        return { name:v[0], ...v[1] }
-                                });
-                
-                // 완성된 schema가 들어갈 배열
-                const schemaSet = {};
-                
-                while (schemaQueue.length > 0) {
-                        break;
-                        const now = schemaQueue.unshift();
-                        const parent = findRef(now);
-
-                        if(parent){
-                                if(!schemaSet.hasOwnProperty(parent)) {
-                                        schemaQueue.push(now);
-                                        continue;
-                                } else {
-                                        break;
-                                }
-                        }
-                        // parent없는 schema
-                        else {
-                                break;
-                        }
-                }
-                
-                //===========methods head 
-                const methods_h1 = createTitle( 'Methods');
-                methods_div.appendChild(methods_h1);
 
 
-                //==========methods ul
-                const methods_ul = ce(ul);
-                methods_div.appendChild(methods_ul);
-
-                //===================server li 
-                json.methods.sort().forEach(m => {
-                        const method_li = ce(li);
-                        methods_ul.appendChild(method_li);
-
-                        const method_name = cewt(h2, m.name);
-                        method_li.appendChild(method_name);
-
-                        const method_description = cewt(div, m.description);
-                        method_li.appendChild(method_description);
-
-
-                        const params_div = ce(div);
-                        method_li.appendChild(params_div);
-
-                        const params_head = cewt(h4, "Params");
-                        params_div.appendChild(params_head);
-
-                        const params_ul = ce(ul);
-                        params_div.appendChild(params_ul);
-
-                        m.params.forEach(p => {
-                                const param_li = ce(li);
-                                params_ul.appendChild(param_li);
-
-                                const param_head = ce(div);
-                                param_li.appendChild(param_head);
-
-                                const param_name = cewt(span, p.name);
-                                param_head.appendChild(param_name);
-
-                                const param_required = p.required ? cewt(span, 'required') : cewt(span, 'option');
-                                param_required.style.padding = '0px 7px';
-                                param_required.style.color = p.required ? `red` : `#bbb`;
-                                param_head.appendChild(param_required);
-
-                                const description_contetnt = p.description ?? "";
-
-                                const param_description = cewt(div, description_contetnt);
-                                param_li.appendChild(param_description);
-
-
-                                const param_schema = ce(div);
-                                param_li.appendChild(param_schema);
-
-                                const param_schema_head = cewt(div, 'schema');
-                                param_schema.appendChild(param_schema_head);
-
-                                const param_schema_body = ce(div);
-
-                                if (p.schema?.type == 'array') {
-                                        param_schema_body.innerText = p.schema.items.type + "[]";
-                                } else {
-                                        param_schema_body.innerText = p.schema.type;
-                                }
-                                param_schema.appendChild(param_schema_body)
-
-                                //TODO:schema ref처리
-                                //methods보다 components를 먼저 처리해야됨. 
-                        })
-
-
-                        const result_div = ce(div);
-                        method_li.appendChild(result_div);
-
-                        const result_head = cewt(h4, "Result");
-                        result_div.appendChild(result_head);
-
-                        const result_name = cewt(div, m.result.name);
-                        result_div.appendChild(result_name);
-
-                        const result_description = cewt(div, m.result.description);
-                        result_div.appendChild(result_description);
-
-
-                        const result_schema = ce(div);
-                        result_div.appendChild(result_schema);
-
-                        const result_schema_head = cewt(div, 'schema');
-                        result_schema.appendChild(result_schema_head);
-
-                        const result_schema_body = ce(div);
-
-                        if (m.result.schema?.type == 'array') {
-                                result_schema_body.innerText = m.result.schema.items.type + "[]";
-                        } else {
-                                result_schema_body.innerText = m.result.schema.type;
-                        }
-                        result_schema.appendChild(result_schema_body)
-
-                        //TODO:schema ref처리
-                        //methods보다 components를 먼저 처리해야됨.
-                })
-        })();
-
-</script> -->
 
 </html>

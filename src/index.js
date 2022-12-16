@@ -21,8 +21,8 @@ jsonrpc.method('kill_bill', (ctx, next) => {
     ctx.body = 'kill_bill';
 });
 
-jsonrpc.method('get_pet_by_id', (ctx, next) => {
-    ctx.body = 'get_pet_by_id';
+jsonrpc.method('get_pets', (ctx, next) => {
+    ctx.body = 'get_pets';
 });
 
 jsonrpc.method('someMethod', (ctx, next) => {
@@ -30,7 +30,6 @@ jsonrpc.method('someMethod', (ctx, next) => {
 });
 
 jsonrpc.method('delete_pet_by_id', (ctx, next) => {
-    console.log('xx')
     ctx.body = 'delete_pet_by_id';
 });
 

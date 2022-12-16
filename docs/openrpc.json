@@ -3,11 +3,11 @@
   "info": {
     "version": "1.0.0",
     "title": "KillBill",
-    "description": "A sample API that uses a petstore as an example to demonstrate features in the OpenRPC specification",
+    "description": "A sample API that demonstrates features in the OpenRPC specification",
     "termsOfService": "https://open-rpc.org",
     "contact": {
-      "name": "OpenRPC Team",
-      "email": "doesntexist@open-rpc.org",
+      "name": "ehdcjf",
+      "email": "ehdcjf@funnyfig.com",
       "url": "https://open-rpc.org"
     },
     "license": {
@@ -117,6 +117,33 @@
   ],
   "components": {
     "schemas": {
+      "Category":{
+          "type":"object",
+          "properties": {
+            "id": { "type": "number"},
+            "name":{ "type": "string"}
+          }
+      },
+      "Tag":{
+        "type":"object",
+        "properties": {
+          "id":{"type":"number"},
+          "name":{"type":"string"}
+        }
+      },
+      "Cat":{
+        "type":"object",
+        "properties": {
+          "id":{"type":"number"},
+          "category": { "$ref": "#/components/schemas/Category"},
+          "photoUrls":{ "type":"array", "items": {"type":"string"}},
+          "tags": { "type":"array", "items": {"$ref": "#/components/schemas/Tag"}},
+          "status":{"type":"string"}
+        }
+      },
+      "Number":{
+          "type":"number"
+      },
       "Pet": {
         "allOf": [
           {
