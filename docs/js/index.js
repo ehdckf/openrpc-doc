@@ -4,7 +4,7 @@ import MethodsMaker from "./methods.js";
 import createComponents from './components/index.js'
 
 export default async function createDocs() {
-        const jsonRequest = await fetch('http://localhost:3000/docs/openrpc.json');
+        const jsonRequest = await fetch('http://localhost:3000/doc-json');
         const openrpc = await jsonRequest.json();
         console.log(openrpc)
         window.editor = {};
@@ -28,7 +28,6 @@ export default async function createDocs() {
         main_div.push(servers_div);
         main_div.push(methods_div);
         main_div.push(components_div);
-
-        
-
 }
+
+createDocs();

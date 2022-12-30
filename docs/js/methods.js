@@ -15,7 +15,15 @@ export default class MethodsMaker{
                 const methods_title = createTitle("Methods");
         
                 const methods_ul = ce(ul);
-        
+                require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
+                window.MonacoEnvironment = { getWorkerUrl: () => proxy };
+
+                let proxy = URL.createObjectURL(new Blob([`
+	        self.MonacoEnvironment = {
+		        baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
+	        };
+	        importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');
+                `], { type: 'text/javascript' }));
                 this.methods.forEach(method => {
                         const method_li = this.createMethodItem(method)
                         methods_ul.push(method_li);
